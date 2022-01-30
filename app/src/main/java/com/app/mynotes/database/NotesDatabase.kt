@@ -18,7 +18,7 @@ abstract class NotesDatabase : RoomDatabase() {
 
         @Synchronized
         fun getInstance(context: Context): NotesDatabase {
-            if(instance == null){
+            if (instance == null) {
                 instance = Room.databaseBuilder(
                     context,
                     NotesDatabase::class.java,
