@@ -6,7 +6,6 @@ object Constant {
     const val DATABASE_NOTES = "notes_db"
     const val TABLE_NOTES = "notes_table"
     const val COLUMN_TITLE = "title"
-    const val COLUMN_SUB_TITLE = "sub_title"
     const val COLUMN_DATE = "date"
     const val COLUMN_TEXT = "description"
     const val COLUMN_IMG_PATH = "img_path"
@@ -15,7 +14,6 @@ object Constant {
 
     /** Activity **/
     const val REQUEST_CODE_READ_STORAGE = 123
-    const val REQUEST_CODE_IMAGE = 456
 
     /** Data **/
 

@@ -20,7 +20,7 @@ import com.app.mynotes.utilities.*
 import java.util.*
 
 class NotesAdapter(
-    private val activity : FragmentActivity,
+    private val activity: FragmentActivity,
     private var notes: List<Note>,
 ) : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
 
@@ -69,7 +69,7 @@ class NotesAdapter(
                 val date = Date()
                 val pattern = getDatePattern(date)
                 var dateStr = convertDateToString(date, pattern)
-                if(dateStr.length == 5){
+                if (dateStr.length == 5) {
                     val temp = dateStr
                     dateStr = "Today, $temp"
                 }
@@ -77,7 +77,7 @@ class NotesAdapter(
             } else {
                 val pattern = getDatePattern(Date(dateLong))
                 var dateStr = convertDateLongToString(dateLong, pattern)
-                if(dateStr.length == 5){
+                if (dateStr.length == 5) {
                     val temp = dateStr
                     dateStr = "Today, $temp"
                 }
@@ -102,41 +102,91 @@ class NotesAdapter(
                 binding.isWebLinkNote = false
         }
 
-        private fun setNoteColor(color: String?){
+        private fun setNoteColor(color: String?) {
             binding.cardView.setCardBackgroundColor(Color.parseColor(color))
             setTextsColorBinding(color)
         }
 
-        private fun setTextsColorBinding(color: String?){
-            when(color){
+        private fun setTextsColorBinding(color: String?) {
+            when (color) {
                 Constant.colorByName[Colors.Blue],
                 Constant.colorByName[Colors.Red],
                 Constant.colorByName[Colors.Purple] -> {
                     binding.tvTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
-                    binding.tvDescription.setTextColor(ContextCompat.getColor(context, R.color.white_light))
-                    binding.tvDate.setTextColor(ContextCompat.getColor(context, R.color.white_light_extra))
+                    binding.tvDescription.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.white_light
+                        )
+                    )
+                    binding.tvDate.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.white_light_extra
+                        )
+                    )
                     binding.tvWebLink.setTextColor(ContextCompat.getColor(context, R.color.green))
                 }
 
                 Constant.colorByName[Colors.Orange] -> {
                     binding.tvTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
-                    binding.tvDescription.setTextColor(ContextCompat.getColor(context, R.color.white_light))
+                    binding.tvDescription.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.white_light
+                        )
+                    )
                     binding.tvDate.setTextColor(ContextCompat.getColor(context, R.color.text_color))
-                    binding.tvWebLink.setTextColor(ContextCompat.getColor(context, R.color.url_color))
+                    binding.tvWebLink.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.url_color
+                        )
+                    )
                 }
 
                 Constant.colorByName[Colors.Yellow], Constant.colorByName[Colors.Green] -> {
-                    binding.tvTitle.setTextColor(ContextCompat.getColor(context, R.color.black_dark))
-                    binding.tvDescription.setTextColor(ContextCompat.getColor(context, R.color.text_color))
+                    binding.tvTitle.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.black_dark
+                        )
+                    )
+                    binding.tvDescription.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.text_color
+                        )
+                    )
                     binding.tvDate.setTextColor(ContextCompat.getColor(context, R.color.text_color))
-                    binding.tvWebLink.setTextColor(ContextCompat.getColor(context, R.color.url_color))
+                    binding.tvWebLink.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.url_color
+                        )
+                    )
                 }
 
                 Constant.colorByName[Colors.Black] -> {
-                    binding.tvTitle.setTextColor(ContextCompat.getColor(context, R.color.white_light))
-                    binding.tvDescription.setTextColor(ContextCompat.getColor(context, R.color.text_color))
+                    binding.tvTitle.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.white_light
+                        )
+                    )
+                    binding.tvDescription.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.text_color
+                        )
+                    )
                     binding.tvDate.setTextColor(ContextCompat.getColor(context, R.color.text_color))
-                    binding.tvWebLink.setTextColor(ContextCompat.getColor(context, R.color.url_color))
+                    binding.tvWebLink.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.url_color
+                        )
+                    )
                 }
             }
         }

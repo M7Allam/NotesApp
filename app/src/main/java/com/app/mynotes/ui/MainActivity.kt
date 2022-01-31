@@ -1,16 +1,13 @@
 package com.app.mynotes.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.app.mynotes.R
 import com.app.mynotes.viewmodel.NotesViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
-    private val notesViewModel : NotesViewModel by lazy {
+    private val notesViewModel: NotesViewModel by lazy {
         NotesViewModel
     }
 
@@ -22,7 +19,7 @@ class MainActivity : AppCompatActivity(){
         getNotes()
     }
 
-    private fun getNotes(){
+    private fun getNotes() {
         notesViewModel.getNotes()
     }
 }

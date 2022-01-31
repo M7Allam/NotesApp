@@ -14,8 +14,8 @@
         <action
             android:id="@+id/action_notesFragment_to_createNoteFragment"
             app:destination="@id/createNoteFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"/>
+            app:enterAnim="@anim/left_anim"
+            app:exitAnim="@anim/left_anim_gone"/>
     </fragment>
 
     <fragment
@@ -31,7 +31,9 @@
             app:argType="com.app.mynotes.data.Note" />
         <action
             android:id="@+id/action_createNoteFragment_to_notesFragment"
-            app:destination="@id/notesFragment" />
+            app:destination="@id/notesFragment"
+            app:enterAnim="@anim/right_anim"
+            app:exitAnim="@anim/right_anim_gone"/>
     </fragment>
 
 

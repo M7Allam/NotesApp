@@ -16,13 +16,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.app.mynotes.R
 import com.app.mynotes.adapter.NotesAdapter
 import com.app.mynotes.data.Note
-import com.app.mynotes.database.NotesDatabase
 import com.app.mynotes.databinding.FragmentNotesBinding
-import com.app.mynotes.utilities.BaseFragment
-import com.app.mynotes.utilities.ItemNotesAdapterOnCLick
 import com.app.mynotes.utilities.log
 import com.app.mynotes.viewmodel.NotesViewModel
-import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -31,13 +27,17 @@ class NotesFragment : Fragment() {
     private val binding: FragmentNotesBinding by lazy {
         FragmentNotesBinding.inflate(layoutInflater)
     }
-    private val notesViewModel : NotesViewModel by lazy {
+    private val notesViewModel: NotesViewModel by lazy {
         NotesViewModel
     }
     private lateinit var notesAdapter: NotesAdapter
     private lateinit var notesList: List<Note>
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         //binding = FragmentNotesBinding.inflate(inflater, container, false)
         notesViewModel.init(requireContext())
 
@@ -61,7 +61,7 @@ class NotesFragment : Fragment() {
 
     }
 
-    private fun observeOnNotesList(){
+    private fun observeOnNotesList() {
         notesViewModel.notesLiveData.observe(viewLifecycleOwner, {
             it?.let {
                 notesList = it.sortedByDescending { note ->
@@ -96,7 +96,7 @@ class NotesFragment : Fragment() {
         }
     }
 
-    private fun onWebUrlNoteClick(){
+    private fun onWebUrlNoteClick() {
         notesAdapter.onWebUrlClickListener = { note ->
             requireActivity().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(note.webLink)))
         }
@@ -114,7 +114,9 @@ class NotesFragment : Fragment() {
                 val tempArr = ArrayList<Note>()
 
                 for (note in notesList) {
-                    if (note.title!!.lowercase(Locale.getDefault()).contains(p0.toString().lowercase())) {
+                    if (note.title!!.lowercase(Locale.getDefault())
+                            .contains(p0.toString().lowercase())
+                    ) {
                         tempArr.add(note)
                     }
                 }
@@ -135,12 +137,14 @@ class NotesFragment : Fragment() {
         }
     }
 
-    private fun onBackPressed(){
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                requireActivity().finish()
-            }
-        })
+    private fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finish()
+                }
+            })
     }
 
 }

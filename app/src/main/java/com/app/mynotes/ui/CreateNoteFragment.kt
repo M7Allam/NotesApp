@@ -2,11 +2,11 @@ package com.app.mynotes.ui
 
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.AlertDialog
 import android.app.Dialog
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -18,8 +18,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -32,16 +30,9 @@ import com.app.mynotes.databinding.DialogBackPressedBinding
 import com.app.mynotes.databinding.FragmentCreateNoteBinding
 import com.app.mynotes.utilities.*
 import com.app.mynotes.viewmodel.NotesViewModel
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_create_note.*
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -266,7 +257,7 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
         }
     }
 
-    private fun gotoNotesFragment(){
+    private fun gotoNotesFragment() {
         Navigation.findNavController(requireView()).run {
             navigate(R.id.action_createNoteFragment_to_notesFragment)
         }
@@ -274,7 +265,8 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
 
     private fun alertDialog() {
         val dialog = Dialog(requireContext())
-        val bindingAlertDialog = DialogBackPressedBinding.inflate(LayoutInflater.from(requireContext()))
+        val bindingAlertDialog =
+            DialogBackPressedBinding.inflate(LayoutInflater.from(requireContext()))
         dialog.setContentView(bindingAlertDialog.root)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(0))
         bindingAlertDialog.tvYes.setOnClickListener {
@@ -526,22 +518,23 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
         log("onDestroy broadcastReceiver")
     }
 
-    private val activityResultPickImage : ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        result.data?.data?.let {
-            val selectedImageUrl = it
-            try {
-                val inputStream =
-                    requireActivity().contentResolver.openInputStream(selectedImageUrl)
-                val bitmap = BitmapFactory.decodeStream(inputStream)
-                binding.imgNote.setImageBitmap(bitmap)
-                selectedImagePath = getPathFromUri(selectedImageUrl)!!
-                binding.isLayoutImage = true
-            } catch (e: Exception) {
-                log("getPathFromUri Error: ${e.message}")
-                requireView().makeToast("${e.message}")
-                binding.isLayoutImage = false
+    private val activityResultPickImage: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            result.data?.data?.let {
+                val selectedImageUrl = it
+                try {
+                    val inputStream =
+                        requireActivity().contentResolver.openInputStream(selectedImageUrl)
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    binding.imgNote.setImageBitmap(bitmap)
+                    selectedImagePath = getPathFromUri(selectedImageUrl)!!
+                    binding.isLayoutImage = true
+                } catch (e: Exception) {
+                    log("getPathFromUri Error: ${e.message}")
+                    requireView().makeToast("${e.message}")
+                    binding.isLayoutImage = false
+                }
             }
         }
-    }
 
 }

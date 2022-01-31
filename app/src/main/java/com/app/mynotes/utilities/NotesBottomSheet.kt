@@ -10,11 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.app.mynotes.R
 import com.app.mynotes.databinding.NotesBottomSheetBinding
-import com.app.mynotes.viewmodel.NotesViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -76,7 +73,6 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
     }
 
 
-
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         log("onDismiss BottomSheet")
@@ -87,7 +83,7 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setNoteColorChecked() {
-        when(selectedColor){
+        when (selectedColor) {
             Constant.colorByName[Colors.Blue] -> {
                 onNoteCheck(1)
             }
@@ -112,14 +108,14 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private fun onNoteCheck(i : Int){
-        binding.icCheckNote1.visibility = if(i == 1) View.VISIBLE else View.GONE
-        binding.icCheckNote2.visibility = if(i == 2) View.VISIBLE else View.GONE
-        binding.icCheckNote3.visibility = if(i == 3) View.VISIBLE else View.GONE
-        binding.icCheckNote4.visibility = if(i == 4) View.VISIBLE else View.GONE
-        binding.icCheckNote5.visibility = if(i == 5) View.VISIBLE else View.GONE
-        binding.icCheckNote6.visibility = if(i == 6) View.VISIBLE else View.GONE
-        binding.icCheckNote7.visibility = if(i == 7) View.VISIBLE else View.GONE
+    private fun onNoteCheck(i: Int) {
+        binding.icCheckNote1.visibility = if (i == 1) View.VISIBLE else View.GONE
+        binding.icCheckNote2.visibility = if (i == 2) View.VISIBLE else View.GONE
+        binding.icCheckNote3.visibility = if (i == 3) View.VISIBLE else View.GONE
+        binding.icCheckNote4.visibility = if (i == 4) View.VISIBLE else View.GONE
+        binding.icCheckNote5.visibility = if (i == 5) View.VISIBLE else View.GONE
+        binding.icCheckNote6.visibility = if (i == 6) View.VISIBLE else View.GONE
+        binding.icCheckNote7.visibility = if (i == 7) View.VISIBLE else View.GONE
     }
 
     private fun setBottomSheetCallback(behavior: BottomSheetBehavior<*>) {
@@ -262,7 +258,7 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private fun broadcastActionIntent(action: String?, actionColor: String?){
+    private fun broadcastActionIntent(action: String?, actionColor: String?) {
         log("Broadcast action: $action")
         log("Broadcast actionColor: $actionColor")
         val intent = Intent("bottom_sheet_action")
