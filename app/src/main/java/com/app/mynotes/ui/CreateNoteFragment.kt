@@ -85,7 +85,6 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
         binding.isLayoutEditWebLink = false
     }
 
-
     private fun getArgumentsData() {
         isNewNote = requireArguments().getBoolean("isNewNote")
         if (!isNewNote) {
@@ -355,10 +354,7 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
             notesViewModel.insertNote(note!!)
             requireView().makeSuccessToasty("Saved!")
             isNewNote = false
-            val notesListNew = ArrayList<Note>()
-            notesListNew.addAll(notesViewModel.notesLiveData.value!!)
-            notesListNew.add(0, note!!)
-            notesViewModel.notesLiveData.value = notesListNew
+            notesViewModel.getNotes()
         }
     }
 
@@ -378,15 +374,8 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
             note?.date = currentDate
             notesViewModel.updateNote(note!!)
             requireView().makeSuccessToasty("Saved!")
-            val notesListNew = ArrayList<Note>()
-            notesListNew.addAll(notesViewModel.notesLiveData.value!!)
-            if (noteAdapterPosition == -1) noteAdapterPosition = 0
-            notesListNew[noteAdapterPosition] = note!!
-            val notesListSorted = notesListNew.sortedByDescending { note ->
-                note.date
-            }
+            notesViewModel.getNotes()
             setDateBinding(currentDate)
-            notesViewModel.notesLiveData.value = notesListSorted
         }
     }
 
@@ -399,7 +388,6 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
         notesListNew.trimToSize()
         notesViewModel.notesLiveData.value = notesListNew
         requireActivity().onBackPressed()
-
     }
 
     private fun validateWebLink() {
@@ -412,7 +400,6 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
             requireView().makeWarningToasty("URL is not valid")
         }
     }
-
 
     private fun hasReadStoragePermission() = EasyPermissions.hasPermissions(
         requireContext(),

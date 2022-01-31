@@ -114,7 +114,7 @@ class NotesFragment : Fragment() {
                 val tempArr = ArrayList<Note>()
 
                 for (note in notesList) {
-                    if (note.title!!.lowercase(Locale.getDefault()).contains(p0.toString())) {
+                    if (note.title!!.lowercase(Locale.getDefault()).contains(p0.toString().lowercase())) {
                         tempArr.add(note)
                     }
                 }
