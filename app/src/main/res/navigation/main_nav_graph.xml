@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/notesFragment"
-        android:name="com.app.mynotes.ui.NotesFragment"
+        android:name="com.mallam.mynotes.ui.NotesFragment"
         android:label="fragment_notes"
         tools:layout="@layout/fragment_notes" >
         <action
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/createNoteFragment"
-        android:name="com.app.mynotes.ui.CreateNoteFragment"
+        android:name="com.mallam.mynotes.ui.CreateNoteFragment"
         android:label="fragment_create_note"
         tools:layout="@layout/fragment_create_note" >
         <argument
@@ -28,7 +28,7 @@
             app:argType="boolean" />
         <argument
             android:name="note"
-            app:argType="com.app.mynotes.data.Note" />
+            app:argType="com.mallam.mynotes.data.Note" />
         <action
             android:id="@+id/action_createNoteFragment_to_notesFragment"
             app:destination="@id/notesFragment"
