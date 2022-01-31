@@ -18,6 +18,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -255,10 +259,8 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
 
     private fun onBackPressed() {
         if (matchedNote()) {
-            log("onBackPressed 1")
             gotoNotesFragment()
         } else {
-            log("onBackPressed 2")
             alertDialog()
 
         }
@@ -424,9 +426,7 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
 
     private fun pickImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intent.resolveActivity(requireActivity().packageManager)?.let {
-            startActivityForResult(intent, Constant.REQUEST_CODE_IMAGE)
-        }
+        activityResultPickImage.launch(intent)
     }
 
     private fun getPathFromUri(contentUri: Uri): String? {
@@ -442,29 +442,6 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
         }
 
         return filePath
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Constant.REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK) {
-            data?.let {
-                val selectedImageUrl = data.data
-                selectedImageUrl?.let {
-                    try {
-                        val inputStream =
-                            requireActivity().contentResolver.openInputStream(selectedImageUrl)
-                        val bitmap = BitmapFactory.decodeStream(inputStream)
-                        binding.imgNote.setImageBitmap(bitmap)
-                        selectedImagePath = getPathFromUri(selectedImageUrl)!!
-                        binding.isLayoutImage = true
-                    } catch (e: Exception) {
-                        log("getPathFromUri Error: ${e.message}")
-                        requireView().makeToast("${e.message}")
-                        binding.isLayoutImage = false
-                    }
-                }
-            }
-        }
     }
 
     override fun onRequestPermissionsResult(
@@ -547,6 +524,24 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
         super.onDestroyView()
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
         log("onDestroy broadcastReceiver")
+    }
+
+    private val activityResultPickImage : ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        result.data?.data?.let {
+            val selectedImageUrl = it
+            try {
+                val inputStream =
+                    requireActivity().contentResolver.openInputStream(selectedImageUrl)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                binding.imgNote.setImageBitmap(bitmap)
+                selectedImagePath = getPathFromUri(selectedImageUrl)!!
+                binding.isLayoutImage = true
+            } catch (e: Exception) {
+                log("getPathFromUri Error: ${e.message}")
+                requireView().makeToast("${e.message}")
+                binding.isLayoutImage = false
+            }
+        }
     }
 
 }
