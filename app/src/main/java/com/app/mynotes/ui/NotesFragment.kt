@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.app.mynotes.R
@@ -18,25 +20,30 @@ import com.app.mynotes.database.NotesDatabase
 import com.app.mynotes.databinding.FragmentNotesBinding
 import com.app.mynotes.utilities.BaseFragment
 import com.app.mynotes.utilities.ItemNotesAdapterOnCLick
+import com.app.mynotes.utilities.log
 import com.app.mynotes.viewmodel.NotesViewModel
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
-class NotesFragment : BaseFragment() {
+class NotesFragment : Fragment() {
 
-    private lateinit var binding: FragmentNotesBinding
-    private val notesViewModel = NotesViewModel
+    private val binding: FragmentNotesBinding by lazy {
+        FragmentNotesBinding.inflate(layoutInflater)
+    }
+    private val notesViewModel : NotesViewModel by lazy {
+        NotesViewModel
+    }
     private lateinit var notesAdapter: NotesAdapter
     private lateinit var notesList: List<Note>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        // Inflate the layout for this fragment
-        binding = FragmentNotesBinding.inflate(inflater, container, false)
+        //binding = FragmentNotesBinding.inflate(inflater, container, false)
         notesViewModel.init(requireContext())
 
         searchView()
         onFABClick()
+        onBackPressed()
 
         return binding.root
     }
@@ -46,9 +53,12 @@ class NotesFragment : BaseFragment() {
         observeOnNotesList()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         notesViewModel.notesLiveData.removeObservers(viewLifecycleOwner)
+        log("NotesFragment ** onDestroyView ** hasObservers: ${notesViewModel.notesLiveData.hasObservers()}")
+        log("NotesFragment ** onDestroyView ** hasActiveObservers: ${notesViewModel.notesLiveData.hasActiveObservers()}")
+
     }
 
     private fun observeOnNotesList(){
@@ -123,6 +133,14 @@ class NotesFragment : BaseFragment() {
                 navigate(R.id.action_notesFragment_to_createNoteFragment, args)
             }
         }
+    }
+
+    private fun onBackPressed(){
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+            }
+        })
     }
 
 }

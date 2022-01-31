@@ -23,7 +23,7 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
     companion object {
         private var instance: NotesBottomSheet? = null
         private var isNewNote = false
-        private var selectedColor = Constant.colorByName[Colors.Blue]
+        private var selectedColor = ""
 
         @JvmStatic
         fun newInstance(isNewNote: Boolean, color: String?): NotesBottomSheet {
@@ -31,7 +31,10 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
                 instance = NotesBottomSheet()
             }
             this.isNewNote = isNewNote
-            if (!color.isNullOrEmpty()) selectedColor = color
+            selectedColor = if (!color.isNullOrEmpty()) color
+            else Constant.colorByName[Colors.Blue]!!
+
+            log("newInstance ** selectedColor $selectedColor")
 
             return instance!!
         }
@@ -41,13 +44,12 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
     private var action = ""
     private var actionColor = ""
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
+        log("onCreateView BottomSheet")
         binding = NotesBottomSheetBinding.inflate(inflater, container, false)
 
         setNoteColorChecked()
@@ -62,6 +64,7 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
     @SuppressLint("RestrictedApi")
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
+        log("setupDialog BottomSheet")
         binding = NotesBottomSheetBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
         val param = (binding.root.parent as View).layoutParams as CoordinatorLayout.LayoutParams
@@ -76,10 +79,10 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        broadcastActionIntent()
+        log("onDismiss BottomSheet")
+        broadcastActionIntent(action, actionColor)
         action = ""
         actionColor = ""
-        selectedColor = Constant.colorByName[Colors.Blue]
 
     }
 
@@ -157,37 +160,38 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun onNotesColorClick() {
-        //NOTE 1
+        //COLOR 1
         binding.layoutNoteColor1.setOnClickListener {
             setSelectedColor(1)
             onNoteCheck(1)
         }
-        //NOTE 2
+        //COLOR 2
         binding.layoutNoteColor2.setOnClickListener {
             setSelectedColor(2)
             onNoteCheck(2)
+
         }
-        //NOTE 3
+        //COLOR 3
         binding.layoutNoteColor3.setOnClickListener {
             setSelectedColor(3)
             onNoteCheck(3)
         }
-        //NOTE 4
+        //COLOR 4
         binding.layoutNoteColor4.setOnClickListener {
             setSelectedColor(4)
             onNoteCheck(4)
         }
-        //NOTE 5
+        //COLOR 5
         binding.layoutNoteColor5.setOnClickListener {
             setSelectedColor(5)
             onNoteCheck(5)
         }
-        //NOTE 6
+        //COLOR 6
         binding.layoutNoteColor6.setOnClickListener {
             setSelectedColor(6)
             onNoteCheck(6)
         }
-        //NOTE 7
+        //COLOR 7
         binding.layoutNoteColor7.setOnClickListener {
             setSelectedColor(7)
             onNoteCheck(7)
@@ -226,6 +230,9 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
             }
             else -> Constant.colorByName[Colors.Black]!!
         }
+
+
+        broadcastActionIntent("", actionColor)
     }
 
     private fun onMoreLayoutClick() {
@@ -255,7 +262,7 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private fun broadcastActionIntent(){
+    private fun broadcastActionIntent(action: String?, actionColor: String?){
         log("Broadcast action: $action")
         log("Broadcast actionColor: $actionColor")
         val intent = Intent("bottom_sheet_action")
@@ -264,5 +271,15 @@ class NotesBottomSheet : BottomSheetDialogFragment() {
         LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        log("onDestroyView BottomSheetDialog")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        log("onDestroy BottomSheetDialog")
+        log("onDestroy ** selectedColor $selectedColor")
+    }
 
 }

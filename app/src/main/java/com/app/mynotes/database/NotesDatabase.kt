@@ -14,16 +14,18 @@ abstract class NotesDatabase : RoomDatabase() {
     abstract fun noteDao(): NotesDao
 
     companion object {
+        @Volatile
         private var instance: NotesDatabase? = null
 
-        @Synchronized
         fun getInstance(context: Context): NotesDatabase {
             if (instance == null) {
-                instance = Room.databaseBuilder(
-                    context,
-                    NotesDatabase::class.java,
-                    Constant.DATABASE_NOTES
-                ).build()
+                synchronized(this){
+                    instance = Room.databaseBuilder(
+                        context,
+                        NotesDatabase::class.java,
+                        Constant.DATABASE_NOTES
+                    ).build()
+                }
             }
             return instance!!
         }

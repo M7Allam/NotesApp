@@ -19,29 +19,20 @@ object NotesViewModel : ViewModel() {
         NotesRepo.init(context)
     }
 
-    fun getNotes() = GlobalScope.launch {
-        this.coroutineContext.let {
-            notesLiveData.postValue(repo.getNotes())
-        }
+    fun getNotes() = viewModelScope.launch(Dispatchers.IO) {
+        notesLiveData.postValue(repo.getNotes())
     }
 
-    fun insertNote(note: Note) = GlobalScope.launch{
-        this.coroutineContext.let {
-            repo.insertNote(note)
-        }
-
+    fun insertNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
+        repo.insertNote(note)
     }
 
-    fun updateNote(note: Note) = GlobalScope.launch{
-        this.coroutineContext.let {
-            repo.updateNote(note)
-        }
+    fun updateNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
+        repo.updateNote(note)
     }
 
-    fun deleteNote(id: Int) = GlobalScope.launch{
-        this.coroutineContext.let{
-            repo.deleteNote(id)
-        }
+    fun deleteNote(id: Int) = viewModelScope.launch(Dispatchers.IO) {
+        repo.deleteNote(id)
 
     }
 

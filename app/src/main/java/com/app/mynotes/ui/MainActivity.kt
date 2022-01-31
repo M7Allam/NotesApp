@@ -10,7 +10,9 @@ import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(){
 
-    private val notesViewModel = NotesViewModel
+    private val notesViewModel : NotesViewModel by lazy {
+        NotesViewModel
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

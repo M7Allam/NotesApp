@@ -4,12 +4,12 @@ package com.app.mynotes.ui
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.*
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,10 +17,14 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.Navigation
 import com.app.mynotes.R
 import com.app.mynotes.data.Note
+import com.app.mynotes.databinding.DialogBackPressedBinding
 import com.app.mynotes.databinding.FragmentCreateNoteBinding
 import com.app.mynotes.utilities.*
 import com.app.mynotes.viewmodel.NotesViewModel
@@ -29,6 +33,7 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_create_note.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -36,11 +41,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks,
+class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
     EasyPermissions.RationaleCallbacks {
 
-    private lateinit var binding: FragmentCreateNoteBinding
-    private val notesViewModel = NotesViewModel
+    private val binding: FragmentCreateNoteBinding by lazy {
+        FragmentCreateNoteBinding.inflate(layoutInflater)
+    }
+    private val notesViewModel: NotesViewModel by lazy {
+        NotesViewModel
+    }
     private var note: Note? = null
     private var currentDate: Long? = null
     private var selectedColor = Constant.colorByName[Colors.Blue]
@@ -54,8 +63,7 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-        binding = FragmentCreateNoteBinding.inflate(inflater, container, false)
+        //binding = FragmentCreateNoteBinding.inflate(inflater, container, false)
         notesViewModel.init(requireContext())
         initBindingVariables()
 
@@ -177,6 +185,7 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks,
         onIcMore()
         onColorViewClick()
         onEditWebLinkClick()
+        onBackClicked()
     }
 
     private fun onIcDeleteImageClick() {
@@ -231,8 +240,52 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks,
 
     private fun onIcBack() {
         binding.icBack.setOnClickListener {
-            requireActivity().onBackPressed()
+            onBackPressed()
         }
+    }
+
+    private fun onBackClicked() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    onBackPressed()
+                }
+            })
+    }
+
+    private fun onBackPressed() {
+        if (matchedNote()) {
+            log("onBackPressed 1")
+            gotoNotesFragment()
+        } else {
+            log("onBackPressed 2")
+            alertDialog()
+
+        }
+    }
+
+    private fun gotoNotesFragment(){
+        Navigation.findNavController(requireView()).run {
+            navigate(R.id.action_createNoteFragment_to_notesFragment)
+        }
+    }
+
+    private fun alertDialog() {
+        val dialog = Dialog(requireContext())
+        val bindingAlertDialog = DialogBackPressedBinding.inflate(LayoutInflater.from(requireContext()))
+        dialog.setContentView(bindingAlertDialog.root)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(0))
+        bindingAlertDialog.tvYes.setOnClickListener {
+            dialog.dismiss()
+            gotoNotesFragment()
+        }
+
+        bindingAlertDialog.tvNo.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun onIcMore() {
@@ -274,13 +327,21 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks,
         selectedColor,
     )
 
-    private fun matchedNote() = (
-            note!!.title.equals(binding.etNoteTitle.text.toString().trim()) &&
-                    note!!.description.equals(binding.etNoteDescription.text.toString().trim()) &&
-                    note!!.imgPath.equals(selectedImagePath) &&
-                    note!!.webLink.equals(webLink) &&
-                    note!!.color.equals(selectedColor)
-            )
+    private fun matchedNote(): Boolean {
+        var isMatched = false
+        if (note != null) {
+            if (note!!.title.equals(binding.etNoteTitle.text.toString().trim()) &&
+                note!!.description.equals(binding.etNoteDescription.text.toString().trim()) &&
+                note!!.imgPath.equals(selectedImagePath) &&
+                note!!.webLink.equals(webLink) &&
+                note!!.color.equals(selectedColor)
+            ) {
+                isMatched = true
+            }
+        }
+
+        return isMatched
+    }
 
     private fun saveNote() {
         if (binding.etNoteTitle.text.toString().trim().isEmpty())
@@ -319,6 +380,7 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks,
             requireView().makeSuccessToasty("Saved!")
             val notesListNew = ArrayList<Note>()
             notesListNew.addAll(notesViewModel.notesLiveData.value!!)
+            if (noteAdapterPosition == -1) noteAdapterPosition = 0
             notesListNew[noteAdapterPosition] = note!!
             val notesListSorted = notesListNew.sortedByDescending { note ->
                 note.date
@@ -487,15 +549,17 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks,
                 Colors.Green.toString() -> Constant.colorByName[Colors.Green]
                 Colors.Orange.toString() -> Constant.colorByName[Colors.Orange]
                 Colors.Black.toString() -> Constant.colorByName[Colors.Black]
-                else -> if (note != null) note!!.color else Constant.colorByName[Colors.Blue]
+                //else -> if (note != null) note!!.color else Constant.colorByName[Colors.Blue]
+                else -> selectedColor
             }
             setColorViewBinding(selectedColor)
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
+        log("onDestroy broadcastReceiver")
     }
 
 }
