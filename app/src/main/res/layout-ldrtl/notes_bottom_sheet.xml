@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="isDeleteNoteLayout"
+            type="Boolean" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layoutDirection="ltr"
+        tools:context=".utilities.NotesBottomSheet">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black_dark"
+            android:paddingHorizontal="@dimen/_16sdp"
+            android:paddingBottom="@dimen/_16sdp">
+
+            <!-- layoutMore -->
+            <FrameLayout
+                android:id="@+id/layoutMore"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_40sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/icMore"
+                    android:layout_width="@dimen/_24sdp"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/shape_bar"/>
+            </FrameLayout>
+
+            <!-- layoutNoteColors -->
+            <LinearLayout
+                android:id="@+id/layoutNoteColors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingVertical="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutMore">
+
+                <!-- Note 1 -->
+                <FrameLayout
+                    android:id="@+id/layoutNoteColor1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_note_color_border"
+                    android:padding="@dimen/_4sdp">
+
+                    <FrameLayout
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:background="@drawable/shape_note_color"
+                        android:backgroundTint="@color/blue"/>
+
+                    <ImageView
+                        android:id="@+id/icCheckNote1"
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        app:tint="@color/white_light" />
+
+                </FrameLayout>
+
+                <!-- Note 2 -->
+                <FrameLayout
+                    android:id="@+id/layoutNoteColor2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_note_color_border"
+                    android:padding="@dimen/_4sdp"
+                    android:layout_marginStart="@dimen/_8sdp">
+
+                    <FrameLayout
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:background="@drawable/shape_note_color"
+                        android:backgroundTint="@color/red"/>
+
+                    <ImageView
+                        android:id="@+id/icCheckNote2"
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        app:tint="@color/white_light"/>
+                </FrameLayout>
+
+                <!-- Note 3 -->
+                <FrameLayout
+                    android:id="@+id/layoutNoteColor3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_note_color_border"
+                    android:padding="@dimen/_4sdp"
+                    android:layout_marginStart="@dimen/_8sdp">
+
+                    <FrameLayout
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:background="@drawable/shape_note_color"
+                        android:backgroundTint="@color/yellow"/>
+
+                    <ImageView
+                        android:id="@+id/icCheckNote3"
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        app:tint="@color/black"/>
+                </FrameLayout>
+
+                <!-- Note 4 -->
+                <FrameLayout
+                    android:id="@+id/layoutNoteColor4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_note_color_border"
+                    android:padding="@dimen/_4sdp"
+                    android:layout_marginStart="@dimen/_8sdp">
+
+                    <FrameLayout
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:background="@drawable/shape_note_color"
+                        android:backgroundTint="@color/purple"/>
+
+                    <ImageView
+                        android:id="@+id/icCheckNote4"
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        app:tint="@color/white_light"/>
+                </FrameLayout>
+
+                <!-- Note 5 -->
+                <FrameLayout
+                    android:id="@+id/layoutNoteColor5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_note_color_border"
+                    android:padding="@dimen/_4sdp"
+                    android:layout_marginStart="@dimen/_8sdp">
+
+                    <FrameLayout
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:background="@drawable/shape_note_color"
+                        android:backgroundTint="@color/green"/>
+
+                    <ImageView
+                        android:id="@+id/icCheckNote5"
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        app:tint="@color/black"/>
+                </FrameLayout>
+
+                <!-- Note 6 -->
+                <FrameLayout
+                    android:id="@+id/layoutNoteColor6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_note_color_border"
+                    android:padding="@dimen/_4sdp"
+                    android:layout_marginStart="@dimen/_8sdp">
+
+                    <FrameLayout
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:background="@drawable/shape_note_color"
+                        android:backgroundTint="@color/orange"/>
+
+                    <ImageView
+                        android:id="@+id/icCheckNote6"
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        app:tint="@color/white_light"/>
+                </FrameLayout>
+
+                <!-- Note 7 -->
+                <FrameLayout
+                    android:id="@+id/layoutNoteColor7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_note_color_border"
+                    android:padding="@dimen/_4sdp"
+                    android:layout_marginStart="@dimen/_8sdp">
+
+                    <FrameLayout
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:background="@drawable/shape_note_color"
+                        android:backgroundTint="@color/black_light"/>
+
+                    <ImageView
+                        android:id="@+id/icCheckNote7"
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
+                        android:src="@drawable/ic_check"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        app:tint="@color/white_light"/>
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <!-- layoutDeleteNote -->
+            <LinearLayout
+                android:id="@+id/layoutDeleteNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:visibility="@{isDeleteNoteLayout? View.VISIBLE: View.GONE, default= gone}"
+                android:paddingVertical="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutNoteColors">
+
+                <ImageView
+                    android:id="@+id/icDeleteNote"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/ic_trash"
+                    app:tint="@color/white_light_extra"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/manrope_semi_bold"
+                    android:text="Delete note"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/white_light_extra"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    app:layout_constraintTop_toTopOf="@+id/icDeleteNote"
+                    app:layout_constraintBottom_toBottomOf="@+id/icDeleteNote"
+                    app:layout_constraintStart_toEndOf="@+id/icDeleteNote"/>
+
+            </LinearLayout>
+
+            <!-- layoutAddImage -->
+            <LinearLayout
+                android:id="@+id/layoutAddImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutDeleteNote">
+
+                <ImageView
+                    android:id="@+id/icImg"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/ic_image"
+                    app:tint="@color/white_light_extra"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/manrope_semi_bold"
+                    android:text="Add image"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/white_light_extra"
+                    android:layout_marginStart="@dimen/_8sdp" />
+
+            </LinearLayout>
+
+            <!-- layoutAddURL -->
+            <LinearLayout
+                android:id="@+id/layoutAddURL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutAddImage">
+
+                <ImageView
+                    android:id="@+id/icLink"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/ic_link"
+                    app:tint="@color/white_light_extra" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/manrope_semi_bold"
+                    android:text="Add URL"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/white_light_extra"
+                    android:layout_marginStart="@dimen/_8sdp"/>
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>
