@@ -74,21 +74,23 @@ class NotesFragment : Fragment() {
                 }else {
                     setupRecycler(notesList)
                 }
-
             }
         })
     }
 
     private fun setupRecycler(notesList: List<Note>) {
         notesAdapter = NotesAdapter(notesList)
+        binding.recyclerNotes.apply{
+            adapter = notesAdapter
+            setHasFixedSize(true)
+            layoutManager = StaggeredGridLayoutManager(
+                2,
+                StaggeredGridLayoutManager.VERTICAL
+            )
+        }
+        //Adapter Clicks
         onItemNoteClick()
         onWebUrlNoteClick()
-        binding.recyclerNotes.adapter = notesAdapter
-        binding.recyclerNotes.setHasFixedSize(true)
-        binding.recyclerNotes.layoutManager = StaggeredGridLayoutManager(
-            2,
-            StaggeredGridLayoutManager.VERTICAL
-        )
     }
 
     private fun onItemNoteClick() {
@@ -97,7 +99,7 @@ class NotesFragment : Fragment() {
                 val args = Bundle()
                 args.putBoolean("isNewNote", false)
                 args.putSerializable("note", note)
-                args.putInt("position", position)
+                //args.putInt("position", position)
                 navigate(R.id.action_notesFragment_to_createNoteFragment, args)
             }
         }

@@ -86,6 +86,7 @@ fun getDatePattern(date: Date?): String {
     return pattern
 }
 
-typealias ItemNotesAdapterOnCLick<T> = (date: T, position: Int) -> Unit
 
-typealias WebUrlNotesAdapterOnCLick<T> = (date: T) -> Unit
+typealias ItemNotesAdapterOnCLick<T> = (data: T, position: Int) -> Unit
+
+typealias WebUrlNotesAdapterOnCLick<T> = (data: T) -> Unit

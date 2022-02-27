@@ -8,9 +8,13 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.mallam.mynotes.data.Note
 import com.mallam.mynotes.databinding.ActivityMainBinding
+import com.mallam.mynotes.repo.NotesRepo
 import com.mallam.mynotes.utilities.Constant
 import com.mallam.mynotes.viewmodel.NotesViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         registerUpdateListener()
         checkAppUpdate()
+
 
 
         getNotes()

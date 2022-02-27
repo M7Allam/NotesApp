@@ -27,15 +27,15 @@ object NotesViewModel : ViewModel() {
         notesLiveData.postValue(repo.getNotes())
     }
 
-    private fun insertNote(note: Note, view:View) = viewModelScope.launch(Dispatchers.IO) {
+    private fun insertNote(note: Note, view: View) = viewModelScope.launch(Dispatchers.IO) {
         repo.insertNote(note)
-        withContext(Dispatchers.Main){
+        withContext(Dispatchers.Main) {
             view.makeSuccessToasty("Saved!")
         }
     }
 
-    fun insertNoteAndRefresh(note: Note, view:View){
-        viewModelScope.launch(Dispatchers.IO){
+    fun insertNoteAndRefresh(note: Note, view: View) {
+        viewModelScope.launch(Dispatchers.IO) {
             val insertJob = insertNote(note, view)
             insertJob.join()
             getNotes()
@@ -43,16 +43,15 @@ object NotesViewModel : ViewModel() {
 
     }
 
-
-    private fun updateNote(note: Note, view:View) = viewModelScope.launch(Dispatchers.IO) {
+    private fun updateNote(note: Note, view: View) = viewModelScope.launch(Dispatchers.IO) {
         repo.updateNote(note)
-        withContext(Dispatchers.Main){
+        withContext(Dispatchers.Main) {
             view.makeSuccessToasty("Saved!")
         }
     }
 
-    fun updateNoteAndRefresh(note: Note, view:View){
-        viewModelScope.launch(Dispatchers.IO){
+    fun updateNoteAndRefresh(note: Note, view: View) {
+        viewModelScope.launch(Dispatchers.IO) {
             val updateJob = updateNote(note, view)
             updateJob.join()
             getNotes()
@@ -60,16 +59,17 @@ object NotesViewModel : ViewModel() {
 
     }
 
-    private fun deleteNote(id: Int, activity: FragmentActivity, view:View) = viewModelScope.launch(Dispatchers.IO) {
-        repo.deleteNote(id)
-        withContext(Dispatchers.Main){
-            view.makeSuccessToasty("Deleted!")
-            activity.onBackPressed()
+    private fun deleteNote(id: Int, activity: FragmentActivity, view: View) =
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.deleteNote(id)
+            withContext(Dispatchers.Main) {
+                view.makeSuccessToasty("Deleted!")
+                activity.onBackPressed()
+            }
         }
-    }
 
-    fun deleteNoteAndRefresh(id: Int, activity: FragmentActivity, view:View){
-        viewModelScope.launch(Dispatchers.IO){
+    fun deleteNoteAndRefresh(id: Int, activity: FragmentActivity, view: View) {
+        viewModelScope.launch(Dispatchers.IO) {
             val deleteJob = deleteNote(id, activity, view)
             deleteJob.join()
             getNotes()

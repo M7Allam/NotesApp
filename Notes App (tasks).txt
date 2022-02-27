@@ -1,0 +1,14 @@
+# Notes background and texts colors
+# Handle Insert, Update, Delete (Success)
+# Formate date 
+# RTL
+# App Update Listener
+- Recycler Animation
+- create a list of checkboxes in description
+- Labels notes
+- Make a copy
+- Share note
+- Auth User
+- Crop image
+- Light Mode
+- Arabic lang

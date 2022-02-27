@@ -17,6 +17,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -89,7 +90,7 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
         isNewNote = requireArguments().getBoolean("isNewNote")
         if (!isNewNote) {
             note = requireArguments().getSerializable("note") as Note
-            noteAdapterPosition = requireArguments().getInt("position")
+            //noteAdapterPosition = requireArguments().getInt("position")
         }
     }
 
@@ -376,6 +377,7 @@ class CreateNoteFragment : Fragment(), EasyPermissions.PermissionCallbacks,
 
     private fun deleteNote() {
         notesViewModel.deleteNoteAndRefresh(note?.id!!, requireActivity(), requireView())
+
     }
 
     private fun validateWebLink() {

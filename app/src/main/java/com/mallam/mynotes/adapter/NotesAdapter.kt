@@ -2,12 +2,12 @@ package com.mallam.mynotes.adapter
 
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.mallam.mynotes.R
 import com.mallam.mynotes.data.Note
@@ -104,6 +104,7 @@ class NotesAdapter(
 
         private fun setTextsColorBinding(color: String?) {
             when (color) {
+                //Blue, Red, Purple
                 Constant.colorByName[Colors.Blue],
                 Constant.colorByName[Colors.Red],
                 Constant.colorByName[Colors.Purple] -> {
@@ -123,6 +124,7 @@ class NotesAdapter(
                     binding.tvWebLink.setTextColor(ContextCompat.getColor(context, R.color.green))
                 }
 
+                //Orange
                 Constant.colorByName[Colors.Orange] -> {
                     binding.tvTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
                     binding.tvDescription.setTextColor(
@@ -140,6 +142,7 @@ class NotesAdapter(
                     )
                 }
 
+                //Yellow, Green
                 Constant.colorByName[Colors.Yellow], Constant.colorByName[Colors.Green] -> {
                     binding.tvTitle.setTextColor(
                         ContextCompat.getColor(
@@ -162,6 +165,7 @@ class NotesAdapter(
                     )
                 }
 
+                //Black
                 Constant.colorByName[Colors.Black] -> {
                     binding.tvTitle.setTextColor(
                         ContextCompat.getColor(
